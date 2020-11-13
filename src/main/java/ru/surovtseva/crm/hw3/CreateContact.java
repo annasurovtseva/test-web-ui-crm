@@ -34,7 +34,7 @@ public class CreateContact {
 
         login();
 
-        //click on Контрагенты - Контактные лица menu
+        //Переход по меню Контрагенты - Контактные лица
         Actions actionContractor =new Actions(driver);
         WebElement contractorMenu = driver.findElement(By.xpath(expensesMenu));
         actionContractor.moveToElement(contractorMenu).perform();
@@ -45,24 +45,20 @@ public class CreateContact {
         driver.findElement(By.xpath(createButton)).click();
 
         //Заполнение полей формы
-
         //Поле Фамилия: заполнение, проверка
         WebElement fieldLastName = driver.findElement(By.name("crm_contact[lastName]"));
-        System.out.println("Поле Фамилия заполнено: " + !fieldLastName.getAttribute("value").isEmpty());
         fieldLastName.sendKeys("Антонов");
         System.out.println("Поле Фамилия заполнено: " + !fieldLastName.getAttribute("value").isEmpty());
         System.out.println("------------------------");
 
         //Поле Имя: заполнение, проверка
         WebElement fieldFirstName = driver.findElement(By.name("crm_contact[firstName]"));
-        System.out.println("Поле Имя заполнено: " + !fieldFirstName.getAttribute("value").isEmpty());
         fieldFirstName.sendKeys("Семен");
         System.out.println("Поле Имя заполнено: " + !fieldFirstName.getAttribute("value").isEmpty());
         System.out.println("------------------------");
 
         //Поле Организация: заполнение, проверка
         WebElement fieldOrganisation = driver.findElement(By.name("crm_contact[company]"));
-        System.out.println("Поле Организация заполнено: " + !fieldOrganisation.getAttribute("value").isEmpty());
 
         driver.findElement(By.xpath(orgChosen)).click();
         driver.findElement(By.xpath(orgInput)).sendKeys("18");
@@ -74,7 +70,6 @@ public class CreateContact {
 
         //Поле Должность: заполнение, проверка
         WebElement fieldJobTitle = driver.findElement(By.name("crm_contact[jobTitle]"));
-        System.out.println("Поле Должность заполнено: " + !fieldJobTitle.getAttribute("value").isEmpty());
         fieldJobTitle.sendKeys("менеджер");
         System.out.println("Поле Должность заполнено: " + !fieldJobTitle.getAttribute("value").isEmpty());
         System.out.println("------------------------");

@@ -20,13 +20,11 @@ public class CreateProject {
     private static final String expensesMenu = "//li[@class='dropdown']/a[contains(., 'Проекты')]";
     private static final String expensesSubmenu = "//li[@data-route='crm_project_my']/a";
     private static final String createButton = "//a[@title='Создать проект']";
-    private static final String orgChosen = "//a[@class='select2-choice select2-default']/span[@class='select2-chosen']";
+    private static final String orgChosen = "//span[@class='select2-chosen' and contains(.,'Укажите организацию')]";
     private static final String orgInput = "//input[@class='select2-input select2-focused']";
     private static final String orgResult = "//div[@class='select2-result-label']";
     private static final String saveButton = "//button[contains(.,'Сохранить и закрыть')]";
     private static final String message = "//div[contains (@class, 'alert-success')]";
-
-
 
     public static void main(String[] args) {
         System.setProperty("webdriver.chrome.driver","src/main/resources/chromedriver.exe");
@@ -48,18 +46,19 @@ public class CreateProject {
         //Заполнение полей формы
         //Поле Наименование: заполнение, проверка
         WebElement fieldProjectName = driver.findElement(By.name("crm_project[name]"));
-        System.out.println("Поле Наименование заполнено: " + !fieldProjectName.getAttribute("value").isEmpty());
-        fieldProjectName.sendKeys("Test_project_20201111_1_saa");
+        fieldProjectName.sendKeys("Test_project_20201114_123_saa");
+
         System.out.println("Поле Наименование заполнено: " + !fieldProjectName.getAttribute("value").isEmpty());
         System.out.println("------------------------");
 
         //Поле Организация: заполнение, проверка
         WebElement fieldOrganisation = driver.findElement(By.name("crm_project[company]"));
-        System.out.println("Поле Организация заполнено: " + !fieldOrganisation.getAttribute("value").isEmpty());
-
         driver.findElement(By.xpath(orgChosen)).click();
+        new WebDriverWait(driver, 3).
+                until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgInput))));
         driver.findElement(By.xpath(orgInput)).sendKeys("18");
-        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgResult))));
+        new WebDriverWait(driver, 5).
+                until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgResult))));
         driver.findElement(By.xpath(orgInput)).sendKeys(Keys.ENTER);
 
         System.out.println("Поле Организация заполнено: " + !fieldOrganisation.getAttribute("value").isEmpty());
@@ -76,6 +75,7 @@ public class CreateProject {
         //Поле Подразделение: заполнение, проверка
         Select fieldBusinessUnit = new Select(driver.findElement(By.name("crm_project[businessUnit]")));
         fieldBusinessUnit.selectByValue("1");
+
         System.out.println("Поле Подразделение заполнено: "+
                 fieldBusinessUnit.getFirstSelectedOption().getAttribute("value").equals("1"));
         System.out.println("------------------------");
@@ -83,6 +83,7 @@ public class CreateProject {
         //Поле Куратор проекта: заполнение, проверка
         Select fieldBProjectCurator = new Select(driver.findElement(By.name("crm_project[curator]")));
         fieldBProjectCurator.selectByVisibleText("Карпов Руслан");
+
         System.out.println("Поле Куратор проекта заполнено: "+
                 fieldBProjectCurator.getFirstSelectedOption().getText().equals("Карпов Руслан"));
         System.out.println("------------------------");
@@ -90,6 +91,7 @@ public class CreateProject {
         //Поле Руководитель проекта: заполнение, проверка
         Select fieldBProjectDirector = new Select(driver.findElement(By.name("crm_project[rp]")));
         fieldBProjectDirector.selectByVisibleText("Авласёнок Денис");
+
         System.out.println("Поле Руководитель проекта заполнено: "+
                 fieldBProjectDirector.getFirstSelectedOption().getText().equals("Авласёнок Денис"));
         System.out.println("------------------------");
@@ -97,6 +99,7 @@ public class CreateProject {
         //Поле Менеджер проекта: заполнение, проверка
         Select fieldBProjectManager = new Select(driver.findElement(By.name("crm_project[manager]")));
         fieldBProjectManager.selectByVisibleText("Амелин Владимир");
+
         System.out.println("Поле Менеджер проекта заполнено: "+
                 fieldBProjectManager.getFirstSelectedOption().getText().equals("Амелин Владимир"));
         System.out.println("------------------------");
@@ -107,6 +110,7 @@ public class CreateProject {
         //Проверка: Отображается сообщение 'Контактное лицо сохранено'
         WebElement messageSuccess = driver.findElement(By.xpath(message));
         new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(messageSuccess));
+
         System.out.println("Отображается сообщение 'Проект сохранен': " + messageSuccess.isDisplayed());
 
         tearDown();
