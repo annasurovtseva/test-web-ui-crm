@@ -20,7 +20,7 @@ public class CreateProject {
     private static final String expensesMenu = "//li[@class='dropdown']/a[contains(., 'Проекты')]";
     private static final String expensesSubmenu = "//li[@data-route='crm_project_my']/a";
     private static final String createButton = "//a[@title='Создать проект']";
-    private static final String orgChosen = "//span[@class='select2-chosen' and contains(.,'Укажите организацию')]";
+    private static final String orgChosen = "//div[@class='company-container']/div/a/span[@class='select2-arrow']";
     private static final String orgInput = "//input[@class='select2-input select2-focused']";
     private static final String orgResult = "//div[@class='select2-result-label']";
     private static final String saveButton = "//button[contains(.,'Сохранить и закрыть')]";
