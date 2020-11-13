@@ -53,10 +53,14 @@ public class CreateProject {
 
         //Поле Организация: заполнение, проверка
         WebElement fieldOrganisation = driver.findElement(By.name("crm_project[company]"));
+        new WebDriverWait(driver, 3).
+                until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgChosen))));
         driver.findElement(By.xpath(orgChosen)).click();
+
         new WebDriverWait(driver, 3).
                 until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgInput))));
         driver.findElement(By.xpath(orgInput)).sendKeys("104");
+
         new WebDriverWait(driver, 5).
                 until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgResult))));
         driver.findElement(By.xpath(orgInput)).sendKeys(Keys.ENTER);
