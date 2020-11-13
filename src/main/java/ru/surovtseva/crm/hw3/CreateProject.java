@@ -56,7 +56,7 @@ public class CreateProject {
         driver.findElement(By.xpath(orgChosen)).click();
         new WebDriverWait(driver, 3).
                 until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgInput))));
-        driver.findElement(By.xpath(orgInput)).sendKeys("18");
+        driver.findElement(By.xpath(orgInput)).sendKeys("104");
         new WebDriverWait(driver, 5).
                 until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgResult))));
         driver.findElement(By.xpath(orgInput)).sendKeys(Keys.ENTER);
@@ -66,10 +66,10 @@ public class CreateProject {
 
         //Поле Основное контактное лицо: заполнение, проверка
         Select fieldMainContact = new Select(driver.findElement(By.name("crm_project[contactMain]")));
-        fieldMainContact.selectByVisibleText("Антонов Семен");
+        fieldMainContact.selectByVisibleText("Павлов Павел");
 
         System.out.println("Поле Основное контактное лицо заполнено: " +
-                fieldMainContact.getFirstSelectedOption().getText().equals("Антонов Семен"));
+                fieldMainContact.getFirstSelectedOption().getText().equals("Павлов Павел"));
         System.out.println("------------------------");
 
         //Поле Подразделение: заполнение, проверка

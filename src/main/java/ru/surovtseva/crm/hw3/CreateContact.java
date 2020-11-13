@@ -19,7 +19,7 @@ public class CreateContact {
     private static final String expensesMenu = "//ul[contains(@class,'nav-multilevel')]/li[contains(.,'Контрагенты')]";
     private static final String expensesSubmenu = "//li[@data-route='crm_contact_index']/a";
     private static final String createButton = "//a[@title='Создать контактное лицо']";
-    private static final String orgChosen = "//span[@class='select2-chosen']";
+    private static final String orgChosen = "//span[@class='select2-arrow']";
     private static final String orgInput = "//input[contains (@class,'select2-input')]";
     private static final String orgResult = "//div[@class='select2-result-label']";
     private static final String saveButton = "//button[contains(.,'Сохранить и закрыть')]";
@@ -47,13 +47,13 @@ public class CreateContact {
         //Заполнение полей формы
         //Поле Фамилия: заполнение, проверка
         WebElement fieldLastName = driver.findElement(By.name("crm_contact[lastName]"));
-        fieldLastName.sendKeys("Антонов");
+        fieldLastName.sendKeys("Павлов");
         System.out.println("Поле Фамилия заполнено: " + !fieldLastName.getAttribute("value").isEmpty());
         System.out.println("------------------------");
 
         //Поле Имя: заполнение, проверка
         WebElement fieldFirstName = driver.findElement(By.name("crm_contact[firstName]"));
-        fieldFirstName.sendKeys("Семен");
+        fieldFirstName.sendKeys("Павел");
         System.out.println("Поле Имя заполнено: " + !fieldFirstName.getAttribute("value").isEmpty());
         System.out.println("------------------------");
 
@@ -61,7 +61,7 @@ public class CreateContact {
         WebElement fieldOrganisation = driver.findElement(By.name("crm_contact[company]"));
 
         driver.findElement(By.xpath(orgChosen)).click();
-        driver.findElement(By.xpath(orgInput)).sendKeys("18");
+        driver.findElement(By.xpath(orgInput)).sendKeys("104");
         new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgResult))));
         driver.findElement(By.xpath(orgInput)).sendKeys(Keys.ENTER);
 
