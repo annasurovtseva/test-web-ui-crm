@@ -26,11 +26,25 @@ public class ApplanaCRMTest {
     private static final String saveButton = "//button[contains(.,'Сохранить и закрыть')]";
     private static final String messageBox = "//div[contains (@class, 'alert-success')]";
     private static final String messageText = "//div[@class='message']";
-    private static final String lastName = "Jim";
-    private static final String firstName = "Doe";
-    private static final String organizationName = "108";
+    private static final String orgChosenProject = "//div[@class='company-container']/div/a/span[@class='select2-arrow']";
+    private static final String orgInputProject = "//input[@class='select2-input select2-focused']";
+    private static final String orgResultProject = "//div[@class='select2-result-label']";
+    private static final String projectMenu = "//li[@class='dropdown']/a[contains(., 'Проекты')]";
+    private static final String projectSubmenu = "//li[@data-route='crm_project_my']/a";
+    private static final String projectPageTitle = "//h1[@class='oro-subtitle' and contains(.,'Мои проекты')]";
+    private static final String orgResultContact = "//div[@class='select2-result-label']";
+    private static final String orgInputContact = "//input[contains (@class,'select2-input')]";
+    private static final String orgChosenContact = "//span[@class='select2-arrow']";
+    private static final String menuContractor = "//ul[contains(@class,'nav-multilevel')]/li[contains(.,'Контрагенты')]";
+    private static final String submenuContact = "//li[@data-route='crm_contact_index']/a";
+    private static final String contactPageTitle = "//h1[@class='oro-subtitle']";
+    private static final String contactPersonsTable = "//table";
+    private static final String lastName = "Андреев";
+    private static final String firstName = "Андрей";
+    private static final String organizationName = "104";
+    private static final String organizationValue = "113";
     private static final String jobTitle = "менеджер";
-    private static final String projectName = "Test_project_20201117_4_saa";
+    private static final String projectName = "Test_project_20201120_1_saa";
     private static final String mainContact = lastName+" "+firstName;
     private static final String projectCurator = "Карпов Руслан";
     private static final String projectDirector = "Авласёнок Денис";
@@ -49,7 +63,7 @@ public class ApplanaCRMTest {
 
     @Test
     void createContactTest() {
-        authorization();
+        authorisation();
         pageContactPersonsIsOpen();
         pageCreateIsOpen("Создать контактное лицо",
                 createContactButton,
@@ -62,7 +76,7 @@ public class ApplanaCRMTest {
     class whenContactCreated {
         @Test
         void createProjectTest() {
-            authorization();
+            authorisation();
             pageMyProjectIsOpen();
             pageCreateIsOpen("Создать проект",
                     createProjectButton,
@@ -79,12 +93,9 @@ public class ApplanaCRMTest {
         }
     }
 
-    //Методы теста createProject
-    private void projectFormFieldsAreFill() {
-        String orgChosen = "//div[@class='company-container']/div/a/span[@class='select2-arrow']";
-        String orgInput = "//input[@class='select2-input select2-focused']";
-        String orgResult = "//div[@class='select2-result-label']";
+// **** Методы теста Создание проекта ***
 
+    private void projectFormFieldsAreFill() {
         //Поле Наименование
         WebElement fieldProjectName = driver.findElement(By.name("crm_project[name]"));
         fieldProjectName.sendKeys(projectName);
@@ -92,16 +103,16 @@ public class ApplanaCRMTest {
         //Поле Организация
         WebElement fieldOrganisation = driver.findElement(By.name("crm_project[company]"));
         new WebDriverWait(driver, 5).
-                until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgChosen))));
-        driver.findElement(By.xpath(orgChosen)).click();
+                until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgChosenProject))));
+        driver.findElement(By.xpath(orgChosenProject)).click();
 
         new WebDriverWait(driver, 5).
-                until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgInput))));
-        driver.findElement(By.xpath(orgInput)).sendKeys(organizationName);
+                until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgInputProject))));
+        driver.findElement(By.xpath(orgInputProject)).sendKeys(organizationName);
 
         new WebDriverWait(driver, 5).
-                until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgResult))));
-        driver.findElement(By.xpath(orgInput)).sendKeys(Keys.ENTER);
+                until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgResultProject))));
+        driver.findElement(By.xpath(orgInputProject)).sendKeys(Keys.ENTER);
 
         //Поле Основное контактное лицо
         Select fieldMainContact = new Select(driver.findElement(By.name("crm_project[contactMain]")));
@@ -126,7 +137,7 @@ public class ApplanaCRMTest {
         Assertions.assertAll(
                 ()-> assertThat(fieldProjectName.getAttribute("value").equals(projectName)).
                         as("Поле Наименование заполнено").isTrue(),
-                ()-> assertThat(fieldOrganisation.getAttribute("value").equals("117")).
+                ()-> assertThat(fieldOrganisation.getAttribute("value").equals(organizationValue)).
                         as("Поле Организация заполнено").isTrue(),
                 ()-> assertThat(fieldMainContact.getFirstSelectedOption().getText().equals(mainContact)).
                         as("Поле Основное контактное лицо").isTrue(),
@@ -142,17 +153,7 @@ public class ApplanaCRMTest {
     }
 
     private void pageMyProjectIsOpen() {
-        String expensesMenu = "//li[@class='dropdown']/a[contains(., 'Проекты')]";
-        String expensesSubmenu = "//li[@data-route='crm_project_my']/a";
-        String projectPageTitle = "//h1[@class='oro-subtitle' and contains(.,'Мои проекты')]";
-
-        Actions actionProject = new Actions(driver);
-        WebElement projectMenu = driver.findElement(By.xpath(expensesMenu));
-        actionProject.moveToElement(projectMenu);
-
-        WebElement projectSubmenu = driver.findElement(By.xpath(expensesSubmenu));
-        actionProject.moveToElement(projectSubmenu);
-        actionProject.click().build().perform();
+        navigationThroughTheMenu(projectMenu,projectSubmenu);
 
         new WebDriverWait(driver, 3).
                 until(ExpectedConditions.textToBe(By.xpath(projectPageTitle), "Все Мои проекты"));
@@ -161,12 +162,9 @@ public class ApplanaCRMTest {
         assertThat(createButton.isDisplayed()).as("Присутствует кнока Создать Проект").isTrue();
      }
 
-    //Методы теста createContact
-    private void contactFormFieldsAreFill() {
-        String orgResult = "//div[@class='select2-result-label']";
-        String orgInput = "//input[contains (@class,'select2-input')]";
-        String orgChosen = "//span[@class='select2-arrow']";
+// *** Методы теста Создание контакта ***
 
+    private void contactFormFieldsAreFill() {
         //Поле Фамилия
         WebElement fieldLastName = driver.findElement(By.name("crm_contact[lastName]"));
         fieldLastName.sendKeys(lastName);
@@ -176,10 +174,10 @@ public class ApplanaCRMTest {
         fieldFirstName.sendKeys(firstName);
 
         WebElement fieldOrganisation = driver.findElement(By.name("crm_contact[company]"));
-        driver.findElement(By.xpath(orgChosen)).click();
-        driver.findElement(By.xpath(orgInput)).sendKeys(organizationName);
-        new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgResult))));
-        driver.findElement(By.xpath(orgInput)).sendKeys(Keys.ENTER);
+        driver.findElement(By.xpath(orgChosenContact)).click();
+        driver.findElement(By.xpath(orgInputContact)).sendKeys(organizationName);
+        new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(orgResultContact))));
+        driver.findElement(By.xpath(orgInputContact)).sendKeys(Keys.ENTER);
 
         WebElement fieldJobTitle = driver.findElement(By.name("crm_contact[jobTitle]"));
         fieldJobTitle.sendKeys(jobTitle);
@@ -189,7 +187,7 @@ public class ApplanaCRMTest {
                         as("Поле Фамилия заполнено").isTrue(),
                 ()-> assertThat(fieldFirstName.getAttribute("value").equals(firstName)).
                         as("Поле Имя заполнено").isTrue(),
-                ()-> assertThat(fieldOrganisation.getAttribute("value").equals("117")).
+                ()-> assertThat(fieldOrganisation.getAttribute("value").equals(organizationValue)).
                         as("Поле Организация заполнено").isTrue(),
                 ()-> assertThat(fieldJobTitle.getAttribute("value").equals(jobTitle)).
                         as("Поле Должность заполнено").isTrue()
@@ -197,18 +195,7 @@ public class ApplanaCRMTest {
     }
 
     private void pageContactPersonsIsOpen() {
-        String menu = "//ul[contains(@class,'nav-multilevel')]/li[contains(.,'Контрагенты')]";
-        String submenu = "//li[@data-route='crm_contact_index']/a";
-        String contactPageTitle = "//h1[@class='oro-subtitle']";
-        String contactPersonsTable = "//table";
-
-        Actions actionContractor = new Actions(driver);
-        WebElement contractorMenu = driver.findElement(By.xpath(menu));
-        actionContractor.moveToElement(contractorMenu);
-
-        WebElement contractorSubmenu = driver.findElement(By.xpath(submenu));
-        actionContractor.moveToElement(contractorSubmenu);
-        actionContractor.click().build().perform();
+        navigationThroughTheMenu(menuContractor,submenuContact);
 
         WebElement createButton = driver.findElement(By.xpath(createContactButton));
         WebElement contactsTable = driver.findElement(By.xpath(contactPersonsTable));
@@ -224,7 +211,22 @@ public class ApplanaCRMTest {
         );
     }
 
-    //Общие методы
+//*** Общие методы ***
+
+    /*
+     Метод принимает menu = локатор пункта основного меню
+                     submenu = локатор пункта подменю
+    */
+    private void navigationThroughTheMenu(String menu, String submenu){
+        Actions action = new Actions(driver);
+        WebElement MENU = driver.findElement(By.xpath(menu));
+        action.moveToElement(MENU);
+
+        WebElement SUBMENU = driver.findElement(By.xpath(submenu));
+        action.moveToElement(SUBMENU);
+        action.click().build().perform();
+    }
+
     /*
     Метод принимает title = заголовок, который нужно найти на странице
                     createButton = локатор кнопки Создать...
@@ -238,15 +240,15 @@ public class ApplanaCRMTest {
     }
 
     //Метод принимает Text = текст ожидаемого сообщения
-    private void saveButtonIsClick(String Text) {
+    private void saveButtonIsClick(String text) {
         driver.findElement(By.xpath(saveButton)).click();
         WebElement messageSuccess = driver.findElement(By.xpath(messageBox));
         new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(messageSuccess));
         WebElement textOfMessage = driver.findElement(By.xpath(messageText));
-        Assertions.assertEquals(Text, textOfMessage.getText());
+        Assertions.assertEquals(text, textOfMessage.getText());
     }
 
-    private void authorization() {
+    private void authorisation() {
         WebElement firstPage = driver.findElement(By.xpath(firsPageTitle));
         Assertions.assertTrue(firstPage.isDisplayed());
     }
@@ -265,7 +267,7 @@ public class ApplanaCRMTest {
     private static void setUpDriverSession() {
         driver = new ChromeDriver();
         ChromeOptions options = new ChromeOptions();
-        options.setPageLoadStrategy(PageLoadStrategy.EAGER);
+        options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 }
