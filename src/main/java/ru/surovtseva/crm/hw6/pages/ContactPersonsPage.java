@@ -1,5 +1,6 @@
 package ru.surovtseva.crm.hw6.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -25,24 +26,28 @@ public class ContactPersonsPage extends BasePage {
     @FindBy(xpath = "//div[contains (@class, 'alert-success')]")
     private WebElement messageBox;
 
+    @Step ("Открыта страница 'Контактные лица'")
     public ContactPersonsPage checkPageTitle() {
         wait10second.until(ExpectedConditions.visibilityOf(pageTitle));
         assertThat(pageTitle.isDisplayed()).as("Открыта страница Контактные лица").isTrue();
         return this;
     }
 
+    @Step ("Присутствует Таблица контактных лиц")
     public ContactPersonsPage checkTableOnPage() {
         wait10second.until(ExpectedConditions.visibilityOf(tableContactPersons));
         assertThat(tableContactPersons.isDisplayed()).as("Присутствует Таблица контактных лиц").isTrue();
         return this;
     }
 
+    @Step ("Присутствует кнока 'Создать контактное лицо'")
     public ContactPersonsPage checkButtonCreateOnPage() {
         wait10second.until(ExpectedConditions.visibilityOf(buttonCreateContact));
         assertThat(buttonCreateContact.isDisplayed()).as("Присутствует кнока Создать контактное лицо").isTrue();
         return this;
     }
 
+    @Step("Проверка страницы Контактные лица")
     public ContactPersonsPage checkContactPersonsPage() {
         checkPageTitle();
         checkTableOnPage();
@@ -50,14 +55,16 @@ public class ContactPersonsPage extends BasePage {
         return this;
     }
 
-    //Проверка: Видим уведомление Контактное лицо сохранено
+    @Step ("Появилось уведомление 'Контактное лицо сохранено'")
     public ContactPersonsPage checkMessage(String messageText) {
         wait10second.until(ExpectedConditions.visibilityOf(messageBox));
         assertThat(messageBox.getText().contains(messageText)).isTrue();
         return this;
     }
 
+    @Step ("Нажата кнопка 'Создатьконтактное лицо'")
     public CreateContactPersonPage clickOnButtonCreate() {
+        wait10second.until(ExpectedConditions.visibilityOf(buttonCreateContact));
         buttonCreateContact.click();
         return new CreateContactPersonPage(driver);
     }

@@ -1,5 +1,6 @@
 package ru.surovtseva.crm.hw6.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -41,21 +42,25 @@ public class CreateContactPersonPage extends BasePage {
     @FindBy(xpath = "//button[contains(.,'Сохранить и закрыть')]")
     private WebElement buttonSave;
 
-
+    @Step("Заполнение поля Фамилия")
     public CreateContactPersonPage enterLastName(String lastName) {
         fieldLastName.sendKeys(lastName);
         return this;
     }
 
+    @Step("Заполнение поля Имя")
     public CreateContactPersonPage enterFirstName(String firstName) {
         fieldFirstName.sendKeys(firstName);
         return this;
     }
 
+    @Step("Заполнение поля Должность")
     public CreateContactPersonPage enterJobTitle(String jobTitle) {
         fieldJobTitle.sendKeys(jobTitle);
         return this;
     }
+
+    @Step("Заполнение поля Наименование организация")
     public CreateContactPersonPage enterOrganisationName(String organisationName) {
         contactOrgChosen.click();
         contactOrgInput.sendKeys(organisationName);
@@ -64,34 +69,43 @@ public class CreateContactPersonPage extends BasePage {
         return this;
     }
 
+    @Step("Нажата кнопка 'Сохранить и закрыть'")
     public ContactPersonsPage clickOnButtonSave() {
         buttonSave.click();
         return new ContactPersonsPage(driver);
     }
 
+    @Step("Поле Имя заполнено")
     public CreateContactPersonPage checkFieldFirstNameIsFill(String firstName) {
         assertThat(fieldFirstName.getAttribute("value").equals(firstName)).
                 as("Поле Имя заполнено").isTrue();
         return this;
     }
 
+    @Step("Поле Фамилия заполнено")
     public CreateContactPersonPage checkFieldLastNameIsFill(String lastName) {
         assertThat(fieldLastName.getAttribute("value").equals(lastName)).
                 as("Поле Фамилия заполнено").isTrue();
         return this;
     }
+
+    @Step("Поле Должность заполнено")
     public CreateContactPersonPage checkFieldJobTitleIsFill(String jobTitle) {
         assertThat(fieldJobTitle.getAttribute("value").equals(jobTitle)).
                 as("Поле Должность заполнено").isTrue();
         return this;
     }
+
+    @Step("Поле Организация заполнено")
     public CreateContactPersonPage checkFieldOrganisationIsFill(String organizationValue) {
         assertThat(fieldOrganisation.getAttribute("value").equals(organizationValue)).
                 as("Поле Организация заполнено").isTrue();
         return this;
     }
 
-    public CreateContactPersonPage fillFormFields(String lastName,String firstName,String organizationName,String jobTitle) {
+    @Step("Заполнение полей формы 'Создать контактное лицо'")
+    public CreateContactPersonPage fillFormFields(String lastName,String firstName,String organizationName,
+                                                  String jobTitle) {
         enterLastName(lastName);
         enterFirstName(firstName);
         enterOrganisationName(organizationName);
@@ -99,7 +113,9 @@ public class CreateContactPersonPage extends BasePage {
         return this;
     }
 
-    public CreateContactPersonPage checkContactFormFieldsAreFill(String lastName,String firstName,String organizationValue,String jobTitle) {
+    @Step("Проверка: Поля формы заполнены")
+    public CreateContactPersonPage checkContactFormFieldsAreFill(String lastName,String firstName,
+                                                                 String organizationValue,String jobTitle) {
         checkFieldLastNameIsFill(lastName);
         checkFieldFirstNameIsFill(firstName);
         checkFieldOrganisationIsFill(organizationValue);
@@ -107,6 +123,7 @@ public class CreateContactPersonPage extends BasePage {
         return this;
     }
 
+    @Step ("Открыта страница 'Создать контактное лицо'")
     public CreateContactPersonPage checkPageTitle() {
         assertThat(pageTitle.isDisplayed()).as("Открыта страница Создать контактное лицо").isTrue();
         return this;

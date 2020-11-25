@@ -1,5 +1,6 @@
 package ru.surovtseva.crm.hw6.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -56,11 +57,13 @@ public class CreateProjectPage extends BasePage {
     @FindBy(xpath = "//button[contains(.,'Сохранить и закрыть')]")
     private WebElement buttonSave;
 
+    @Step("Заполнение поля Наименование проекта")
     public CreateProjectPage enterProjectName(String projectName) {
         fieldProjectName.sendKeys(projectName);
         return this;
     }
 
+    @Step("Заполнение поля Наименование организации")
     public CreateProjectPage enterOrganisationName(String organisationName) {
         wait10second.until(ExpectedConditions.visibilityOf(projectOrgChosen));
         projectOrgChosen.click();
@@ -73,31 +76,37 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    @Step("Заполнение поля Контактное лицо")
     public CreateProjectPage enterMainContact(String mainContact) {
         fieldMainContact.selectByVisibleText(mainContact);
         return this;
     }
 
+    @Step("Заполнение поля Подразделение")
     public CreateProjectPage enterBusinessUnit(String businessUnit) {
         fieldBusinessUnit.selectByVisibleText(businessUnit);
         return this;
     }
 
+    @Step("Заполнение поля Куратор проекта")
     public CreateProjectPage enterProjectCurator(String projectCurator) {
         fieldProjectCurator.selectByVisibleText(projectCurator);
         return this;
     }
 
+    @Step("Заполнение поля Руководитель проекта")
     public CreateProjectPage enterProjectDirector(String projectDirector) {
         fieldProjectDirector.selectByVisibleText(projectDirector);
         return this;
     }
 
+    @Step("Заполнение поля Менеджер проекта")
     public CreateProjectPage enterProjectManager(String projectManager) {
         fieldProjectManager.selectByVisibleText(projectManager);
         return this;
     }
 
+    @Step("Заполнение полей формы 'Создать проект'")
     public CreateProjectPage fillFormFields(String projectName,String organisationName,
                                             String mainContact,String businessUnit,
                                             String projectCurator,String projectDirector,
@@ -112,58 +121,68 @@ public class CreateProjectPage extends BasePage {
         return this;
     }
 
+    @Step("Нажата кнопка 'Сохранить и закрыть'")
     public MyProjectsPage clickOnButtonSave() {
         buttonSave.click();
         return new MyProjectsPage(driver);
     }
 
+    @Step("Открыта страница 'Создать проект'")
     public CreateProjectPage checkPageTitle() {
         assertThat(pageTitle.isDisplayed()).as("Открыта страница Создать проект").isTrue();
         return this;
     }
 
+    @Step("Поле Наименование проекта заполнено")
     public CreateProjectPage checkFieldProjectNameIsFill(String projectName) {
         assertThat(fieldProjectName.getAttribute("value").equals(projectName)).
                 as("Поле Наименование заполнено").isTrue();
         return this;
     }
 
+    @Step("Поле Наименование организации заполнено")
     public CreateProjectPage checkFieldOrganisationIsFill(String organizationValue) {
         assertThat(fieldOrganisation.getAttribute("value").equals(organizationValue)).
                 as("Поле Организация заполнено").isTrue();
         return this;
     }
 
+    @Step("Поле Контактное лицо заполнено")
     public CreateProjectPage checkFieldMainContactIsFill(String mainContact) {
         assertThat(fieldMainContact.getFirstSelectedOption().getText().equals(mainContact)).
                 as("Поле Основное контактное лицо заполнено").isTrue();
         return this;
     }
 
+    @Step("Поле Подразделение заполнено")
     public CreateProjectPage checkFieldBusinessUnitIsFill(String businessUnit) {
         assertThat(fieldBusinessUnit.getFirstSelectedOption().getText().equals(businessUnit)).
                 as("Поле Подразделение заполнено").isTrue();
         return this;
     }
 
+    @Step("Поле Куратор проекта заполнено")
     public CreateProjectPage checkFieldProjectCuratorIsFill(String projectCurator) {
         assertThat(fieldProjectCurator.getFirstSelectedOption().getText().equals(projectCurator)).
                 as("Поле Куратор проекта заполнено").isTrue();
         return this;
     }
 
+    @Step("Поле Руководитель проекта заполнено")
     public CreateProjectPage checkFieldProjectDirectorIsFill(String projectDirector) {
         assertThat(fieldProjectDirector.getFirstSelectedOption().getText().equals(projectDirector)).
                 as("Поле Руководитель проекта заполнено").isTrue();
         return this;
     }
 
+    @Step("Поле Менеджер проекта заполнено")
     public CreateProjectPage checkFieldProjectManagerIsFill(String projectManager) {
         assertThat(fieldProjectManager.getFirstSelectedOption().getText().equals(projectManager)).
                 as("Поле Менеджер проекта заполнено").isTrue();
         return this;
     }
 
+    @Step("Проверка: Поля формы заполнены")
     public CreateProjectPage checkProjectFormFieldsAreFill(String projectName,String organisationValue,
                                                            String mainContact,String businessUnit,
                                                            String projectCurator,String projectDirector,
